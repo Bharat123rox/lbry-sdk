@@ -150,13 +150,12 @@ class KademliaPeer:
 
     def __init__(self, loop: asyncio.AbstractEventLoop, address: str, node_id: typing.Optional[bytes] = None,
                  udp_port: typing.Optional[int] = None, tcp_port: typing.Optional[int] = None):
-        if node_id is not None:
-            if not len(node_id) == constants.hash_length:
-                raise ValueError("invalid node_id: {}".format(hexlify(node_id).decode()))
+        if node_id is not None and len(node_id) != constants.hash_length:
+            raise ValueError("node_id length must be {}: {}".format(constants.hash_length, hexlify(node_id).decode()))
         if udp_port is not None and not 0 <= udp_port <= 65536:
-            raise ValueError("invalid udp port")
+            raise ValueError("udp port must be between 0 and 65536")
         if tcp_port and not 0 <= tcp_port <= 65536:
-            raise ValueError("invalid tcp port")
+            raise ValueError("tcp port must be between 0 and 65536")
         if not is_valid_ipv4(address):
             raise ValueError("invalid ip address")
         self.loop = loop
