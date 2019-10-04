@@ -1,52 +1,60 @@
-class RPCError(Exception):
+class BaseLBRYException(Exception):
+    pass
+
+
+class UnknownAPIMethodError(BaseLBRYException):
+    pass
+
+
+class RPCError(BaseLBRYException):
     code = 0
 
 
-class PriceDisagreementError(Exception):
+class PriceDisagreementError(BaseLBRYException):
     pass
 
 
-class DuplicateStreamHashError(Exception):
+class DuplicateStreamHashError(BaseLBRYException):
     pass
 
 
-class DownloadCancelledError(Exception):
+class DownloadCancelledError(BaseLBRYException):
     pass
 
 
-class DownloadSDTimeout(Exception):
+class DownloadSDTimeout(BaseLBRYException):
     def __init__(self, download):
         super().__init__(f'Failed to download sd blob {download} within timeout')
         self.download = download
 
 
-class DownloadTimeoutError(Exception):
+class DownloadTimeoutError(BaseLBRYException):
     def __init__(self, download):
         super().__init__(f'Failed to download {download} within timeout')
         self.download = download
 
 
-class DownloadDataTimeout(Exception):
+class DownloadDataTimeout(BaseLBRYException):
     def __init__(self, download):
         super().__init__(f'Failed to download data blobs for sd hash {download} within timeout')
         self.download = download
 
 
-class ResolveTimeout(Exception):
+class ResolveTimeout(BaseLBRYException):
     def __init__(self, uri):
         super().__init__(f'Failed to resolve "{uri}" within the timeout')
         self.uri = uri
 
 
-class RequestCanceledError(Exception):
+class RequestCanceledError(BaseLBRYException):
     pass
 
 
-class NegativeFundsError(Exception):
+class NegativeFundsError(BaseLBRYException):
     pass
 
 
-class NullFundsError(Exception):
+class NullFundsError(BaseLBRYException):
     pass
 
 
@@ -54,60 +62,60 @@ class InsufficientFundsError(RPCError):
     code = -310
 
 
-class CurrencyConversionError(Exception):
+class CurrencyConversionError(BaseLBRYException):
     pass
 
 
-class FileOpenError(ValueError):
+class FileOpenError(BaseLBRYException):
     # this extends ValueError because it is replacing a ValueError in EncryptedFileDownloader
     # and I don't know where it might get caught upstream
     pass
 
 
-class ResolveError(Exception):
+class ResolveError(BaseLBRYException):
     pass
 
 
-class ConnectionClosedBeforeResponseError(Exception):
+class ConnectionClosedBeforeResponseError(BaseLBRYException):
     pass
 
 
-class KeyFeeAboveMaxAllowed(Exception):
+class KeyFeeAboveMaxAllowed(BaseLBRYException):
     pass
 
 
-class InvalidExchangeRateResponse(Exception):
+class InvalidExchangeRateResponse(BaseLBRYException):
     def __init__(self, source, reason):
         super().__init__(f'Failed to get exchange rate from {source}:{reason}')
         self.source = source
         self.reason = reason
 
 
-class UnknownNameError(Exception):
+class UnknownNameError(BaseLBRYException):
     def __init__(self, name):
         super().__init__(f'Name {name} is unknown')
         self.name = name
 
 
-class UnknownClaimID(Exception):
+class UnknownClaimID(BaseLBRYException):
     def __init__(self, claim_id):
         super().__init__(f'Claim {claim_id} is unknown')
         self.claim_id = claim_id
 
 
-class UnknownURI(Exception):
+class UnknownURI(BaseLBRYException):
     def __init__(self, uri):
         super().__init__(f'URI {uri} cannot be resolved')
         self.name = uri
 
 
-class UnknownOutpoint(Exception):
+class UnknownOutpoint(BaseLBRYException):
     def __init__(self, outpoint):
         super().__init__(f'Outpoint {outpoint} cannot be resolved')
         self.outpoint = outpoint
 
 
-class InvalidName(Exception):
+class InvalidName(BaseLBRYException):
     def __init__(self, name, invalid_characters):
         self.name = name
         self.invalid_characters = invalid_characters
@@ -115,7 +123,7 @@ class InvalidName(Exception):
             'URI contains invalid characters: {}'.format(','.join(invalid_characters)))
 
 
-class UnknownStreamTypeError(Exception):
+class UnknownStreamTypeError(BaseLBRYException):
     def __init__(self, stream_type):
         self.stream_type = stream_type
 
@@ -123,11 +131,11 @@ class UnknownStreamTypeError(Exception):
         return repr(self.stream_type)
 
 
-class InvalidStreamDescriptorError(Exception):
+class InvalidStreamDescriptorError(BaseLBRYException):
     pass
 
 
-class InvalidStreamInfoError(Exception):
+class InvalidStreamInfoError(BaseLBRYException):
     def __init__(self, name, stream_info):
         msg = f'{name} has claim with invalid stream info: {stream_info}'
         super().__init__(msg)
@@ -135,7 +143,7 @@ class InvalidStreamInfoError(Exception):
         self.stream_info = stream_info
 
 
-class MisbehavingPeerError(Exception):
+class MisbehavingPeerError(BaseLBRYException):
     pass
 
 
@@ -151,52 +159,52 @@ class InvalidResponseError(MisbehavingPeerError):
     pass
 
 
-class NoSuchBlobError(Exception):
+class NoSuchBlobError(BaseLBRYException):
     pass
 
 
-class NoSuchStreamHash(Exception):
+class NoSuchStreamHash(BaseLBRYException):
     pass
 
 
-class NoSuchSDHash(Exception):
+class NoSuchSDHash(BaseLBRYException):
     """
     Raised if sd hash is not known
     """
 
 
-class InvalidBlobHashError(Exception):
+class InvalidBlobHashError(BaseLBRYException):
     pass
 
 
-class InvalidHeaderError(Exception):
+class InvalidHeaderError(BaseLBRYException):
     pass
 
 
-class InvalidAuthenticationToken(Exception):
+class InvalidAuthenticationToken(BaseLBRYException):
     pass
 
 
-class NegotiationError(Exception):
+class NegotiationError(BaseLBRYException):
     pass
 
 
-class InvalidCurrencyError(Exception):
+class InvalidCurrencyError(BaseLBRYException):
     def __init__(self, currency):
         self.currency = currency
         super().__init__(
             f'Invalid currency: {currency} is not a supported currency.')
 
 
-class NoSuchDirectoryError(Exception):
+class NoSuchDirectoryError(BaseLBRYException):
     def __init__(self, directory):
         self.directory = directory
         super().__init__(f'No such directory {directory}')
 
 
-class ComponentStartConditionNotMet(Exception):
+class ComponentStartConditionNotMet(BaseLBRYException):
     pass
 
 
-class ComponentsNotStarted(Exception):
+class ComponentsNotStarted(BaseLBRYException):
     pass

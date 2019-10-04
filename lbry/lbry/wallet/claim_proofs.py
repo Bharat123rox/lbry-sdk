@@ -1,9 +1,10 @@
 import struct
 import binascii
 from torba.client.hash import double_sha256
+from lbry.error import BaseLBRYException
 
 
-class InvalidProofError(Exception):
+class InvalidProofError(BaseLBRYException):
     pass
 
 
